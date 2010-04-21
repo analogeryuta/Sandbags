@@ -1,0 +1,77 @@
+-1
+(print-elements-of-listf words)
+
+solid
+0
+
+0
+0
+liquid
+
+solidus
+nil
+(inc-counter-in-while-loop)
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+nil
+
+
+(factorial-tail-recursion 5)
+120
+
+3628800
+
+(setq hoge ())
+nil
+(length hoge)
+0
+(setq arry [0 1 2])
+[0 1 2]
+
+(append-to-buffer "hoge" 1 100)
+nil
+
+nil
+
+(defun aho (buf lineno)
+  (interactive "P")
+  (goto-line lineno buf)
+  ;; 行頭から末尾までのテキストを削除
+  (delete-region (progn (beginning-of-line) (point))
+		 (progn (end-of-line) (point)))
+  ;; 新しい行を挿入
+  (insert "hogefuga"))
+aho
+
+aho
+(aho "hoge" 5)
+nil
+
+nil
+
+
+
+0
+
+0
+
+0
+

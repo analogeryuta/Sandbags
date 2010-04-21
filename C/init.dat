@@ -1,0 +1,71 @@
+#x, y, color
+# 1Îó
+4 1 red
+5 1 blue
+6 1 green
+# 2Îó
+2 2 yellow
+3 2 yellow
+4 2 green
+5 2 blue
+6 2 red
+7 2 blue
+8 2 red
+# 3Îó
+2 3 yellow
+3 3 yellow
+4 3 green
+5 3 blue
+6 3 red
+7 3 blue
+8 3 red
+# 4Îó
+1 4 blue
+2 4 yellow
+3 4 yellow
+4 4 green
+5 4 blue
+6 4 red
+7 4 blue
+8 4 red
+9 4 yellow
+# 5Îó
+1 5 blue
+2 5 yellow
+3 5 yellow
+4 5 green
+5 5 blue
+6 5 red
+7 5 blue
+8 5 red
+9 5 yellow
+# 6Îó
+1 6 blue
+2 6 yellow
+3 6 yellow
+4 6 green
+5 6 blue
+6 6 red
+7 6 blue
+8 6 red
+9 6 yellow
+# 7Îó
+2 7 yellow
+3 7 yellow
+4 7 green
+5 7 blue
+6 7 red
+7 7 blue
+8 7 red
+# 8Îó
+2 8 yellow
+3 8 yellow
+4 8 green
+5 8 blue
+6 8 red
+7 8 blue
+8 8 red
+# 9Îó
+4 9 red
+5 9 blue
+6 9 green

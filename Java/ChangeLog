@@ -1,0 +1,117 @@
+2008-12-27  Yuta AKAMINE  <freddie@otacon.local>
+
+	* add: ProcessingTest/*
+	Eclipse経由でProcessingのcodingができるようだ。参考までに。
+
+	* think:opencv-java
+	main methodはどこに書くか？
+	launcherとして使うclassを作るか。MainApp.javaみたいな。
+
+	* add: opencv-java/CameraCaptureControler.java
+	programのcontroler部分.Threadを使って処理を記述して行く。
+
+	* add: opencv-java/CameraCaptureGUI.java
+	programのview部分。guiと描画imageの表示部分の処理を記述。
+	
+	* add: opencv-java/CameraCapture.java
+	programのmodel部分。opencv由来の処理を記述し、iSightの制御を
+	行う。
+
+	* doing: primitiveな例題(iSightでcapture->Frame経由で描画)
+	一番単純な形のプログラムを作って、それを拡張しつつ開発して行く。
+	方針としては、
+		1.MVC(model,view,control)を意識する
+		2.コンストラクタでの初期化は最小限に留める
+		3.英語のdocument観ながら作業する
+
+	* doing: real time trackingの実装
+	Processingの例題を発見。ProcessingのAPI依存な処理はしてないので、
+	pure Java に書き直し可能っぽい。
+	が、ふとprimitiveなソースを書きたくなったので、今はその作業中。
+		
+	
+2008-12-15  Yuta AKAMINE  <freddie@otacon.cr.ie.u-ryukyu.ac.jp>
+
+	* todo:real time trackingの実装(on opencv-java)
+	できるかなー...
+	C版のソースはあるから、そっちも準備しとくか
+	javaでtrackingできるか正直微妙。
+
+	* todo:opencv-javaの清書
+	Java/Thereminを参考に、もっときれいなsourceに書き直す。
+	あとJavaSoundの例題も。
+
+	* think:時間の使い方
+	sourceの編集にやる気がわかない...
+	だらだら続けるより、ばっとやってばっと休憩する方がいい...
+	のはわかるんだが、どのくらいのスパンをとるか？
+
+	1時間やって30分休憩？
+	で、毎日2時間はプログラミングに時間を割くようにすると。
+	毎日やる、がポイント。
+	今日からやろう、家に帰って2時間プログラミング。
+	って、まえも宣言した気がするが...まーいいや。
+	
+	そのあとはゲーム？でもいいや。とにかくメリハリを。
+	だらだらするくらいならスパっと遊ぶか、本読め。
+	
+	* add:opencv-java/build.xml
+	antの勉強をだらだらと。	
+	build.xmlからetagsを実行できるようになった。
+	
+	antとかツールの使い方勉強するのはいいけど、良い加減プログラミング
+	しないと。
+
+	まだpackageの扱いがよくわからん。ここらへんも早くなれなきゃ...
+
+	* add:OS_ex1
+	OSの課題をやってみよう。どのくらいでできるかのー...
+	eclipseの練習もかねてるんで、まーがんばってみる
+
+2008-12-08  Yuta AKAMINE  <freddie@otacon.cr.ie.u-ryukyu.ac.jp>
+
+	* think:作業環境
+	Eclipseを無理して使う必要あるのかな？
+	java開発するならさわってても良いと思うんだが、emacsで十分な気もす
+	る。第一、まだそんなに大規模じゃないし>theremin
+
+	obj-cに移植するならXcodeつかうが、今の段階でスペック要するIDE使っ
+	てもなぁ...と漠然と思ったり。
+
+	そんなことよりさっさとプログラミングしろぼけが！！
+
+	* change:リポジトリをmercurialへ移行
+	しばらくつかってみよう。
+	
+
+2008-11-11  Yuta AKAMINE  <freddie@otacon.cr.ie.u-ryukyu.ac.jp>
+
+	* think:方針
+	プログラムの動作はもっと簡単に(楽器に使うから)
+	なので、物体検出ももっと単純で良い。あまり凝らないで。
+	色検出はできるのか？
+	ゆびに色付ゴムサックはめて、それを検出するって形でも良い。
+	とにかくもっと軽い(構造も単純な)プログラムを書く事。
+
+	* todo:Mercurialリポジトリの作成
+	新しくThereminのリポジトリをつくる
+	どこにつくろう？場所は？
+
+2008-11-10  Yuta AKAMINE  <freddie@otacon.cr.ie.u-ryukyu.ac.jp>
+
+	* add:JavaSound
+	JavaSoundの例題を追加。opencv-javaとの結合を予定。
+	いつになるかの...
+
+2008-11-08  Yuta AKAMINE  <freddie@otacon.local>
+
+	* やる気があるうちにどんどん追加してってね。
+	
+	*memo: what is? 
+	Javaの練習に書き散らしたソースです。
+	2006年前期のソフトウェア工学の時に書いた奴も混じってます。
+
+		- LogicNode ... 論理式をclassとして実装した物。
+		- Cache     ... キャッシュの簡単な例題の実装。
+		- CardPlay  ... カードゲームのJava版(の残骸)
+		- Marmals   ... classのinheritanceの例題。

@@ -1,0 +1,30 @@
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+<title>Event.java</title>
+<body>
+<pre>
+package schedularSimulator;
+
+import java.util.PriorityQueue;
+
+public class Event implements EventInterface {
+    public int time;
+    public PriorityQueue&lt;Task&gt; task_list;
+
+    Event() {
+        
+    }
+
+    Event(int time_,PriorityQueue&lt;Task&gt; task_list_) {
+            task_list = task_list_;
+            time = time_;
+    }
+    
+    public void exec(PriorityQueue&lt;Event&gt;event_list,int quantum) {
+        
+    }
+        
+}
+</pre>
+</body>
+</html>

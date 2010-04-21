@@ -1,0 +1,63 @@
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+<head>
+<title>スケジューラのシミュレーション (Java)</title>
+</head>
+<body>
+<h1>スケジューラのシミュレーション (Java)</h1>
+<a href=#content>content</a><br>
+<nr>
+
+<p>
+<ul><li><a href="schedularSimulator/Event.java.html"> schedularSimulator/Event.java </a><li><a href="schedularSimulator/EventInterface.java.html"> schedularSimulator/EventInterface.java </a><li><a href="schedularSimulator/PeriodicalRun.java.html"> schedularSimulator/PeriodicalRun.java </a><li><a href="schedularSimulator/RateMonotonicEvent.java.html"> schedularSimulator/RateMonotonicEvent.java </a><li><a href="schedularSimulator/Run.java.html"> schedularSimulator/Run.java </a><li><a href="schedularSimulator/Task.java.html"> schedularSimulator/Task.java </a></ul>
+<p>
+Eclipse でプログラミングを行うこと。
+<p>
+ソースは、こっち。
+<p>
+<a href=" os-queue-java.tgz ">  os-queue-java.tgz </a>
+<p>
+Run は FIFO, SJF のスケジューラーをシミュレートしている。
+<pre>
+    java schedulerSimulator/Run data/task_data.01
+    java schedulerSimulator/Run data/task_data.02
+
+</pre>
+などを動かしてみよう。
+<p>
+PeriodcalRun は Rate Monotonic のスケジューラーをシミュレートしている。
+<pre>
+    java schedulerSimulator/PeriodicalRun data/task_data.p1
+    java schedulerSimulator/PeriodicalRun data/task_data.p2
+
+</pre>
+などを動かしてみよう。
+<p>
+
+<hr>
+<h2><a name="content000">問題4.3</a></h2>
+Run.javaを変更して、priority scheduling と round robinscheduling をシミュレーションせよ。
+<p>
+
+<hr>
+<h2><a name="content001">問題4.4</a></h2>
+Run.java, Task.java を参考に MultiRun.java を書き、マルチCPU対応にしてみよ。Task のPriorityQueue をCPUとみなせば良い。
+<p>
+CPUの数は1,2,4,8,16 の可変とする。
+<p>
+
+<hr>
+<h2><a name="content002">問題4.5 (option)</a></h2>
+PeriodicalRun, Event を拡張して、dead line first schedulingをシミュレーションせよ。
+<p>
+Non periodical task を一緒にテストするにはどうしたら良いか? 
+<p>
+
+<h2><a name="content">Content</h2>
+<ol>
+<li><a href="#content000">  問題4.3</a>
+<li><a href="#content001">  問題4.4</a>
+<li><a href="#content002">  問題4.5 (option)</a>
+</ol>
+
+</body></html>

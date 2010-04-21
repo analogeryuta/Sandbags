@@ -1,0 +1,13 @@
+# type[n/p] clock taskname task-size priority [period]
+n 0 a 110 5
+n 0 c 130 5
+n 0 b 120 5
+n 0 e 150 5
+n 0 f 170 5
+n 0 d 140 5
+n 0 a1 10 5
+n 0 c1 30 5
+n 0 b1 20 5
+n 0 e1 50 5
+n 0 f1 70 5
+n 0 d1 40 5

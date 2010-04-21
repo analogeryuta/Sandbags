@@ -1,0 +1,40 @@
+;; This buffer is for notes you don't want to save, and for Lisp evaluation.
+;; If you want to create a file, visit that file with C-x C-f,
+;; then enter the text in that file's own buffer.
+
+(require 'cl)
+cl
+
+(setq hoge '(a b c d e f))
+(a b c d e f)
+
+(a b c d e f)
+hoge
+(a b c d e f)
+
+(car hoge)
+a
+
+
+(setf (car hoge) 'A)
+A
+
+hoge
+(A b c d e f)
+
+(append hoge (list 'g))
+(A b c d e f g)
+
+hoge
+(A b c d e f)
+
+(cdr hoge)
+(b c d e f)
+hoge
+(A b c d e f)
+hoge
+(A b c d e f)
+(substring "this is a pen." 1 9)
+"his is a"
+(+ 2 fill-column)
+72

@@ -1,0 +1,64 @@
+Fri Nov 21 14:38:31 JST 2003
+
+canvas の -width がおかしい。(ま、いいか...)
+
+Event Simulator としての構造がいまいち変。
+
+exec_task は、event として登録して実行するべきだよな。
+scheduler から直接呼ぶのはなんかおかしい。
+
+deal line scheduler は作らないの?
+
+queue ってのは、実は、task なのね。ってことは、task.c は、
+queue.c に入れ換えられるべきものなのか。
+
+Thu Nov 20 23:57:10 JST 2003
+
+一応できたけど、event_insert1 が重複挿入しているみたい。
+
+Thu Nov 20 21:33:35 JST 2003
+
+Schedular は、同じ時間に投入されるeventがすべて終った後に、
+実行される必要がある。(これは変)
+
+Schedular 側から、次のperiodical task invoke event を
+起動するべきでしょう。
+
+とすると、最初にmain が読み込むのは、event ではなく「task」
+ですな。
+
+それをclock 0 event である schedular に渡すべきだね。
+
+同じ時間に二つのschedularを起動してはいけない。insert 
+する時にチェックする。
+
+Thu Nov 20 13:42:28 JST 2003
+
+やっぱ、Task はいらないよね。あった方が、良いところも
+あるけど。
+
+Preemptive にするためには、Event Queue が
+必要なので別に作る必要がある。
+
+オブジェクト指向で記述するのは学生の仕事だろうな。
+
+Thu Oct 30 14:45:33 CET 2003
+
+Event list
+    start clock, task name, task size, task priority
+
+Task queue
+    task queue name, queue
+
+Queue
+    task_size, priority
+
+main は simulator
+
+Rate monotonic も出来るといいね。
+
+Visualizer
+
+Java で書くと?
+
+# begin

@@ -1,0 +1,28 @@
+;; elisp-log-2
+
+(setq hoge '(a i u e o))
+(a i u e o)
+
+(setq fuga '(ka ki ku ke ko (na ni nu ne no)))
+(ka ki ku ke ko (na ni nu ne no))
+
+(setq aho '(na ni nu ne no))
+(na ni nu ne no)
+
+
+(member 'k hoge)
+nil
+
+;;リストの要素の一つを探せるか
+(member 'a hoge)
+(a i u e o)
+
+(member aho hoge)
+nil
+
+;;入れ子になってるリストから、目的のリストを探せるか？
+(member aho fuga)
+((na ni nu ne no))
+
+(member hoge fuga)
+nil

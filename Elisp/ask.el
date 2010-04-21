@@ -1,0 +1,1 @@
+(princ-list "Input string is: " (read-string "Input some string: "))

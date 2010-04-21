@@ -1,0 +1,53 @@
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+<title>RateMonotonicEvent.java</title>
+<body>
+<pre>
+package schedularSimulator;
+
+import java.util.PriorityQueue;
+
+public class RateMonotonicEvent extends Event implements EventInterface {
+
+    RateMonotonicEvent(int time_,PriorityQueue&lt;Task&gt; task_list_) {
+            task_list = task_list_;
+            time = time_;
+    }
+    
+    public void exec(PriorityQueue&lt;Event&gt;event_list,int quantum) {
+        // task が優先度順に並んでいるとする
+        // 再投入を先にチェックして、一番短いquantumを見つける
+
+        for(Task q: task_list) {
+            if (q.type!='p') continue;
+            // もし、再投入時間ならば再投入する
+            if (q.next_time==PeriodicalRun.task_clock) {
+                q.next_time=PeriodicalRun.task_clock+q.period;
+            // 次の再投入イベントをスケジューリングする
+                event_list.add(new RateMonotonicEvent(q.next_time,task_list));
+                if (quantum==0 || quantum &gt; q.period) quantum = q.period;
+                if (q.length&gt;0) {
+            // length が残っていると言うことは、
+            // まだ、実行されてなかったということ
+                    q.report_dead_line_miss();
+                }
+                q.length = q.task_length;  // タスクの再投入
+            }
+        }
+        for(Task q: task_list) {
+            if (q.type!='p') continue;
+            if (q.length&gt;0) {
+            // まだ、実行されてないtaskで、
+            // 一番優先順位が高いものを実行する
+            //     task queue からは、取り除かない 
+                quantum -= q.exec_task(quantum,task_list);
+                if (quantum &lt;= 0)
+                    return;
+            }
+        }
+
+    }
+}
+</pre>
+</body>
+</html>

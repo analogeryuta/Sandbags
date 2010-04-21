@@ -1,0 +1,72 @@
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+<head>
+<title>スケジューラのシミュレーション</title>
+</head>
+<body>
+<h1>スケジューラのシミュレーション</h1>
+<a href=#content>content</a><br>
+<nr>
+
+<p>
+<ul><li><a href="Makefile.html"> Makefile</a><li><a href="event.c.html"> event.c</a><li><a href="event.h.html"> event.h</a><li><a href="event_pool.c.html"> event_pool.c</a><li><a href="main.c.html"> main.c</a><li><a href="queue.c.html"> queue.c</a><li><a href="queue.h.html"> queue.h</a><li><a href="queue_pool.c.html"> queue_pool.c</a><li><a href="simulate.c.html"> simulate.c</a><li><a href="task.c.html"> task.c</a><li><a href="task.h.html"> task.h</a></ul>
+<p>
+C の標準的な書き方、ファイルの分割の方法、Makefile の書き方などを習得すること。
+<p>
+malloc/free を直接使わずに自分でオブジェクトのメモリを管理する手法に付いても考えよう。(cf. Effective C++)
+<p>
+ソースは、こっち。
+<p>
+<a href="os-queue.tar"> os-queue.tar</a>
+<p>
+Perl/Tk で書いた出力のviewerも使ってみよう。
+<p>
+
+<hr>
+<h2><a name="content000">問題4.3</a></h2>
+main.c を変更して、priority scheduling と round robinscheduling をシミュレーションせよ。
+<p>
+
+<hr>
+<h2><a name="content001">問題4.4</a></h2>
+main.c を変更して、マルチCPU対応にしてみよ。queue の配列をCPUとみなせば良い。CPUの数は1,2,4,8,16 の可変とする。
+<p>
+
+<hr>
+<h2><a name="content002">問題4.5 (option)</a></h2>
+simulate.c を変更して、dead line first schedulingをシミュレーションせよ。
+<p>
+Non periodical task を一緒にテストするにはどうしたら良いか? 
+<p>
+
+<hr>
+<h2><a name="content003">問題4.6 (option)</a></h2>
+以上の例題を、別なプログラミング言語で記述してみよ。
+<p>
+
+<pre>
+     Perl/Tk
+     Java
+     C++
+     Squeak
+
+</pre>
+その他...  
+<p>
+
+<pre>
+     Python
+     Ruby
+     Emacs Lisp
+
+</pre>
+それぞれの言語の特徴が出るようにプログラミングせよ。
+<h2><a name="content">Content</h2>
+<ol>
+<li><a href="#content000">  問題4.3</a>
+<li><a href="#content001">  問題4.4</a>
+<li><a href="#content002">  問題4.5 (option)</a>
+<li><a href="#content003">  問題4.6 (option)</a>
+</ol>
+
+</body></html>

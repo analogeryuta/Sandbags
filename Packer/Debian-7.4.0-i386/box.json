@@ -1,0 +1,74 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+	"<esc><wait>",
+	"install noapic <wait>",
+	"preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+	"auto=true <wait>", 
+	"debian-installer=en_US <wait>",
+	"locale=en_US <wait>",
+	"hostname={{ .Name }} <wait>",
+	"fb=false <wait>",
+	"debconf/frontend=noninteractive <wait>",
+	"console-setup/ask_detect=false <wait>",
+	"console-keymaps-at/keymap=us <wait>",
+	"keyboard-configuration/xkb-keymap=us <wait>"
+	"<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_os_type": "Debian",
+      "headless": false,
+      "http_directory": "./",
+      "iso_checksum": "7339b668a81b417ac023d73739dc6a03",
+      "iso_checksum_type": "md5",
+      "iso_url": "http://ftp.jaist.ac.jp/pub/Linux/debian-cd/7.4.0/i386/iso-cd/debian-7.4.0-i386-netinst.iso",
+      "shutdown_command": "sudo shutdown -P now",
+      "ssh_password": "vagrant",
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "3000s",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+	[
+	  "modifyvm",
+	  "{{ .Name }}",
+	  "--pae",
+	  "on"
+	],
+	[
+	  "modifyvm",
+	  "{{ .Name }}",
+	  "--memory",
+	  "512"
+	],
+	[
+	  "modifyvm",
+	  "{{ .Name }}",
+	  "--cpus",
+	  "1"
+	]
+      ],
+      "vm_name": "box"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "Debian-7.4.0-i386.box",
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'vagrant'| sudo -S sh '{{ .Path }}'",
+      "scripts": [
+	"../postinstall/proxy.sh",
+	"../postinstall/base.sh",
+	"../postinstall/admin.sh",
+	"../postinstall/puppet.sh",
+	"../postinstall/vagrant.sh",
+	"../postinstall/virtualbox.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}

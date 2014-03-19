@@ -5,15 +5,17 @@
 	"<esc><wait>",
 	"install noapic <wait>",
 	"preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
-	"auto=true <wait>", 
 	"debian-installer=en_US <wait>",
+	"auto <wait>", 
 	"locale=en_US <wait>",
-	"hostname={{ .Name }} <wait>",
+	"kbd-chooser/method=us <wait>",
+	"netcfg/get_hostname={{ .Name }} <wait>",
+	"netcfg/get_domain={{ .Name }}.localdomain <wait>",
 	"fb=false <wait>",
 	"debconf/frontend=noninteractive <wait>",
 	"console-setup/ask_detect=false <wait>",
 	"console-keymaps-at/keymap=us <wait>",
-	"keyboard-configuration/xkb-keymap=us <wait>"
+	"keyboard-configuration/xkb-keymap=us <wait>",
 	"<enter><wait>"
       ],
       "boot_wait": "10s",
@@ -26,7 +28,7 @@
       "shutdown_command": "sudo shutdown -P now",
       "ssh_password": "vagrant",
       "ssh_username": "vagrant",
-      "ssh_wait_timeout": "3000s",
+      "ssh_wait_timeout": "500s",
       "type": "virtualbox-iso",
       "vboxmanage": [
 	[

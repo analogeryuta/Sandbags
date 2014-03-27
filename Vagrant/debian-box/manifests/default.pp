@@ -45,7 +45,7 @@ file { "/etc/apt/sources.list.d/pgdg.list":
 
 exec { "postgres repos key":
   command => "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -",
-  require => Package["wget"]
+  require => [Package["wget"], Exec["apt-get update"]]
 }
 
 ### Install dependency packages
@@ -62,6 +62,17 @@ $dependency_packages = [
 package { $dependency_packages:
   ensure => latest,
   require => Exec["apt-get upgrade"]
+}
+
+### Switch default ruby(1.9 => 1.8), gem(1.9 => 1.8)
+exec { "switch alternative ruby":
+  command => "ln -fs /usr/bin/ruby1.8 /etc/alternatives/ruby",
+  require => Package["ruby1.8"]
+}
+
+exec { "switch alternative gem":
+  command => "ln -fs /usr/bin/gem1.8 /etc/alternatives/gem",
+  require => Package["rubygems1.8"]
 }
 
 ### Install dependency RubyGem
@@ -162,5 +173,5 @@ exec { 'disable apache default site configuration':
 
 service { 'apache2':
   ensure => running,
-  enable => true,
+  enable => true
 }

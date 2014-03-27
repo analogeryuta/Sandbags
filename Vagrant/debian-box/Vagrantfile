@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "Debian-7.4-i386"
   config.vm.hostname = "debian-box"
 
-  config.vm.network "forwarded_port", guest: 80, host: 8500
+  config.vm.network "forwarded_port", guest: 80, host: 8500, host_ip: "127.0.0.1", auto_correct: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

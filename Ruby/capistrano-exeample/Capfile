@@ -1,6 +1,0 @@
-desc "Upload test file"
-task :file_transfar => './hoge.txt' do |t|
-  on roles(:all) do
-    upload!(t.prerequisites.first, '/home/vagrant')
-  end
-End

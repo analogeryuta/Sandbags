@@ -1,0 +1,7 @@
+framework_tasks = [:starting, :started, :updating, :updated, :publishing, :published, :finishing, :finished]
+ 
+framework_tasks.each do |t|
+  Rake::Task["deploy:#{t}"].clear
+end
+ 
+Rake::Task[:deploy].clear

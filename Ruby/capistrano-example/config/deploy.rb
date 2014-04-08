@@ -128,7 +128,7 @@ task :archive => :update do
         execute "tar -zcvf #{fetch :application}.tgz ./#{fetch :application}"
       end
     else 
-      execute "echo 'there's no tools, please create files.'"
+      execute "echo 'there are no tools, please create files.'"
     end
   end
 end

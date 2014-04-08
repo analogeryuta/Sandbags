@@ -38,13 +38,13 @@ lock '3.1.0'
 #
 # for Capistrano tutorial: disable all deploy Tasks using Rake::Task.clear
 #
-framework_tasks = [:starting, :started, :updating, :updated, :publishing, :published, :finishing, :finished]
+# framework_tasks = [:starting, :started, :updating, :updated, :publishing, :published, :finishing, :finished]
  
-framework_tasks.each do |t|
-  Rake::Task["deploy:#{t}"].clear
-end
+# framework_tasks.each do |t|
+#   Rake::Task["deploy:#{t}"].clear
+# end
  
-Rake::Task[:deploy].clear
+# Rake::Task[:deploy].clear
 
 #
 # set application's name and install directory
@@ -57,9 +57,8 @@ set :deploy_to, '/home/vagrant/public'
 #set :application, 'Sandbags'
 #set :repo_url, 'git@github.com:analogryuta/Sandbags'
 
-#
-# put 'rakugaki' files to VM server
-#
+
+desc "put 'rakugaki' files to VM server"
 task :rakugaki do
   # describe  your task here.
   run_locally do
@@ -83,82 +82,79 @@ task :rakugaki do
 end
 
 #
-# test /usr/bin/ruby exsists or not.
-#
-task :check_ruby do
-  # describe  your task here.
-  run_locally do
-    # run something locall tasks
-    #execute "uptime"
-    output = capture "echo 'nothing to do on local environment.'"
-    info output
-  end
-  on roles(:web) do
-    # run something tasks on server
-    if test "[ -e /usr/bin/ruby ]"
-      execute "echo 'execute ruby script'"
-      output = capture"ruby -v"
-      info output
-    else 
-      execute "echo 'command not found.'"
-    end
-  end
-end
-
-#
-# update app files
-#
-task :update do
-  # fetch remote scm files here
-  run_locally do
-    execute "echo 'fetch sources from servers via SCM...'"
-  end
-end
-
-#
-# archive fetched files
-#
-task :archive => :update do
-  run_locally do
-    if test "[ -d #{fetch :application} ]"
-      if test "[ -f #{fetch :application}.tgz ]"
-        execute "echo 'tarball already created.'"
-      else 
-        execute "echo 'create tarball here.'"
-        execute "tar -zcvf #{fetch :application}.tgz ./#{fetch :application}"
-      end
-    else 
-      execute "echo 'there are no tools, please create files.'"
-    end
-  end
-end
-
-
-#
-# transfar files local to remote
-#
-task :file_transfar => :archive do
-  archive_file = "#{fetch :application}.tgz"
- #release_path = fetch :archive_name
-  release_path = File.join(fetch(:deploy_to), "")
-
-  # task on local
-  run_locally do
-    #is there nothing to do with local?
-  end
-  # task on remote
-  on roles(:web) do
-    if test "[ -d #{release_path} ]"
-      execute "echo 'release directory was already created.'"
-    else 
-      execute "mkdir -p #{release_path}"
-    end
-
-    upload! archive_file, release_path
-    execute "cd #{release_path}; tar -zxvf #{fetch :application}.tgz"
-  end
-end
-
-#
 # clean gabage tgz files.
 #
+
+namespace :deploy do    
+  desc "test /usr/bin/ruby exsists or not."
+  task :check_ruby do
+    # describe  your task here.
+    run_locally do
+      # run something locall tasks
+      #execute "uptime"
+      output = capture "echo 'nothing to do on local environment.'"
+      info output
+    end
+    on roles(:web) do
+      # run something tasks on server
+      if test "[ -e /usr/bin/ruby ]"
+        info 'execute ruby script'
+        output = capture "ruby -v"
+        info output
+      else 
+        info 'command not found.'
+      end
+    end
+  end
+
+  desc "update app files"
+  task :update_file do
+    # fetch remote scm files here
+    run_locally do
+      execute "echo 'fetch sources from servers via SCM...'"
+    end
+  end
+
+  desc "archive fetched files"
+  task :archive_file => :update_file do
+    run_locally do
+      if test "[ -d #{fetch :application} ]"
+        if test "[ -f #{fetch :application}.tgz ]"
+          info 'tarball already created.'
+        else 
+          info 'create tarball here.'
+          execute "tar -zcvf #{fetch :application}.tgz ./#{fetch :application}"
+        end
+      else 
+        info 'there are no tools, please create files.'
+      end
+    end
+  end
+
+  desc "transfar files local to remote"
+  task :upload_file => :archive_file do
+    archive_file = "#{fetch :application}.tgz"
+    release_path = File.join(fetch(:deploy_to), "")
+
+    on roles(:web) do
+      if test "[ -d #{release_path} ]"
+        info 'release directory was already created.'
+      else 
+        execute "mkdir -p #{release_path}"
+      end
+      upload! archive_file, release_path
+      execute "cd #{release_path}; tar -zxvf #{fetch :application}.tgz"
+    end
+  end
+
+  desc "exec echo server"
+  task :exec_echo_server do
+    on roles(:web) do
+    end
+  end
+
+  desc "Restart application"
+  task :restart_echo_server do
+    #restart command here
+  end
+end

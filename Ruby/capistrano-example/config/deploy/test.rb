@@ -1,7 +1,19 @@
 #
 # set server account informations for remote login to Vagrant's VM
 #
-server '127.0.0.1', roles: %w{web}, user: 'vagrant', port: 2222, ssh_options: {
+server '127.0.0.1', roles: %w{node1, web}, user: 'vagrant', port: 2222, ssh_options: {
+  user: 'vagrant',
+  keys: %w(~/.vagrant.d/insecure_private_key),
+  auth_methods: %w(publickey)
+}
+
+server '127.0.0.1', roles: %w{node2, web}, user: 'vagrant', port: 2200, ssh_options: {
+  user: 'vagrant',
+  keys: %w(~/.vagrant.d/insecure_private_key),
+  auth_methods: %w(publickey)
+}
+
+server '127.0.0.1', roles: %w{node3, web}, user: 'vagrant', port: 2201, ssh_options: {
   user: 'vagrant',
   keys: %w(~/.vagrant.d/insecure_private_key),
   auth_methods: %w(publickey)

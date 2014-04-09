@@ -1,0 +1,8 @@
+require 'rake'
+
+task :default => [:test] 
+
+desc "doing something test"
+task :test do
+  ruby "echo-client.rb"
+end

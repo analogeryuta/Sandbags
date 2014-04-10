@@ -30,3 +30,11 @@ greeting.hello
 ## test for duplicate definition
 greeting.age = 28
 greeting.age
+
+## print object infomations
+puts greeting.class
+puts greeting.method(:hello)
+
+# for i in greeting.class.methods do
+#   puts (i)
+# end

@@ -25,10 +25,14 @@ yieldTest do
   puts "hoge"
 end
 
+#
+# emulate Array.each
+#
 test = YieldTest.new([1, 2, 3, 4, 5])
-# test.each do |i|
-#     puts i
-# end
-test.each { |i|
+test.each do |i|
     puts i
+end
+
+test.each {|i|
+  puts i
 }

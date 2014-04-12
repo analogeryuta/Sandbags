@@ -1,13 +1,12 @@
 #
 # example for code block definitions
 #
-
 class YieldTest
   def initialize foo
     @foo = foo
   end
 
-  def myEach
+  def each
     i=0
     while @foo[i] != nil
       yield @foo[i]
@@ -22,13 +21,14 @@ puts "enter: yieldTest\n"
 puts "exit: yieldTest\n"
 end
 
-
 yieldTest do
   puts "hoge"
 end
 
-
 test = YieldTest.new([1, 2, 3, 4, 5])
-test.myEach do |i|
+# test.each do |i|
+#     puts i
+# end
+test.each { |i|
     puts i
-end
+}

@@ -15,6 +15,10 @@ puts val.hash["one"]
 puts val.hash["three"]
 
 ## get hash var from Object.each roop
-val.hash.each do |key, val|
+val.hash.each { |key, val|
   puts "key: #{key}, val: #{val}"
-end
+}
+
+# val.hash.each do |key, val|
+#   puts "key: #{key}, val: #{val}"
+# end

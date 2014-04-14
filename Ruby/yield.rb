@@ -1,7 +1,6 @@
 #
 # example for code block definitions
 #
-
 class YieldTest
   def initialize foo
     @foo = foo
@@ -21,7 +20,6 @@ puts "enter: yieldTest\n"
   yield 
 puts "exit: yieldTest\n"
 end
-
 
 yieldTest do
   puts "hoge"

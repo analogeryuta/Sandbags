@@ -1,7 +1,6 @@
 #
 # array_spec.rb: test code for behaviour of Array
-# RSpec extends some object codes 
-# (ex, expect(actual)#to matcher(expected))
+# RSpec extends some object codes (ex, Object#should)
 #
 describe Array, "when empty" do
   before do
@@ -9,11 +8,11 @@ describe Array, "when empty" do
   end
 
   it "should be empty" do
-    expect(@empty_array).to be_empty
+    @empty_array.should be_empty
   end
 
   it "should size 0" do
-    expect(@empty_array.size).to eq(0)
+    @empty_array.size.should == 0
   end
 
   after do
@@ -29,7 +28,6 @@ describe Array, "when initialized with object" do
   end
 
   it "should no affect others" do
-    #@array.should == [{:cat => "Nuko"}, {}, {}]
-    expect(@array).to eq([{:cat => "Nuko"}, {}, {}])
+    @array.should == [{:cat => "Nuko"}, {}, {}]
   end
 end

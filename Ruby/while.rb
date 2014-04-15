@@ -19,5 +19,5 @@ class WhileTest
   end
 end
   
-test = WhileTest.new()
-test.whileLoop(128)
+#test = WhileTest.new()
+#test.whileLoop(128)

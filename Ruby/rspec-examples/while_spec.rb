@@ -1,7 +1,9 @@
 require '../while'
 
-describe WhileExample do
-  it "do loop processing" do
-    
+describe WhileTest, "loop using while() examples" do
+  before do
+    @loop = WhileTest.new()
+  end
+  it "should loop processing" do
   end
 end

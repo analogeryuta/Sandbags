@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe package('sshd') do
+describe package('ssh') do
   it { should be_installed }
 end
 

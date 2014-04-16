@@ -6,6 +6,7 @@ include SpecInfra::Helper::Ssh
 include SpecInfra::Helper::DetectOS
 
 RSpec.configure do |c|
+
   if ENV['ASK_SUDO_PASSWORD']
     require 'highline/import'
     c.sudo_password = ask("Enter sudo password: ") { |q| q.echo = false }
@@ -30,16 +31,19 @@ RSpec.configure do |c|
       if config != ''
         config.each_line do |line|
           if match = /HostName (.*)/.match(line)
-            host = match[1]
+            host = match[1].chomp
           elsif  match = /User (.*)/.match(line)
-            user = match[1]
+            user = match[1].chomp
           elsif match = /IdentityFile (.*)/.match(line)
             options[:keys] =  [match[1].gsub(/"/,'')]
+            options[:keys].each { |k| k.chomp! }
           elsif match = /Port (.*)/.match(line)
-            options[:port] = match[1]
+            options[:port] = match[1].chomp
           end
         end
       end
+      p "Debug message below"
+      p host, user, options
       c.ssh   = Net::SSH.start(host, user, options)
     end
   end

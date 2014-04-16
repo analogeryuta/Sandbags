@@ -29,4 +29,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.manifest_file  = "default.pp"
     puppet.options = ["--templatedir", "/vagrant/templates"]
   end
+
+  # Setting for serverspec provisioning
+  config.vm.provision :serverspec do |spec|
+    spec.pattern = "spec/default/*_spec.rb"
+  end
 end

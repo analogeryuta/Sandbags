@@ -4,6 +4,7 @@
 match = []
 host, user, keyfile, port = ""
 config = `vagrant ssh-config default`
+config.each_line { |char| char.chomp! }
 if config != ''
   config.each_line do |line|
       if match = /HostName (.*)/.match(line)

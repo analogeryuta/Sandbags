@@ -1,10 +1,13 @@
 #
 # test for stdout-to-array from command line `vagrant ssh-config default`
+# regex and chomp()'s example.
 #
 match = []
 host, user, keyfile, port = ""
 config = `vagrant ssh-config default`
-config.each_line { |char| char.chomp! }
+#config.each_line("\n") { |char| p char.chomp }
+# config.gsub!(/\r/, '')
+config.gsub!(/\r/) { |char| '' }
 if config != ''
   config.each_line do |line|
       if match = /HostName (.*)/.match(line)

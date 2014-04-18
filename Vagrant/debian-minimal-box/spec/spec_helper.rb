@@ -28,17 +28,17 @@ RSpec.configure do |c|
       user    = options[:user] || Etc.getlogin
       vagrant_up = `vagrant up default`
       config = `vagrant ssh-config default`
+      config.gsub!(/\r/, '')
       if config != ''
         config.each_line do |line|
           if match = /HostName (.*)/.match(line)
-            host = match[1].chomp
+            host = match[1]
           elsif  match = /User (.*)/.match(line)
-            user = match[1].chomp
+            user = match[1]
           elsif match = /IdentityFile (.*)/.match(line)
             options[:keys] =  [match[1].gsub(/"/,'')]
-            options[:keys].each { |k| k.chomp! }
           elsif match = /Port (.*)/.match(line)
-            options[:port] = match[1].chomp
+            options[:port] = match[1]
           end
         end
       end

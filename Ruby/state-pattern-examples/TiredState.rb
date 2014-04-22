@@ -1,9 +1,9 @@
 require "./State"
-require "./AfternoonState"
+require "./BeenLongTimeState"
 
-class HelloState < State
+class TiredState < State
   def initialize 
-    @greeting = "Hello!"
+    @greeting = "It's been a long time!"
   end
 
   def transition(context, input)

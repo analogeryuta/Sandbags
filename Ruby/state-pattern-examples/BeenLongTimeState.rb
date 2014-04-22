@@ -1,5 +1,6 @@
 require "./State"
 require "./HelloState"
+require "./EveningState"
 
 class BeenLongTimeState < State
   def initialize 
@@ -8,7 +9,7 @@ class BeenLongTimeState < State
 
   def transition(context, input)
     if input == "Hello" then
-      context.changeState(self)
+      context.changeState(EveningState.new())
     elsif input == "Hi" then
       context.changeState(HelloState.new())
     end

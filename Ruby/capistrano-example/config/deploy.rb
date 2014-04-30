@@ -24,13 +24,13 @@ lock '3.2.1'
 # set :pty, true
 
 # rbenv settings on remote environmentnt
-set :rbenv_type, :user
-set :rbenv_ruby, '2.1.1'
-# default settings is : ~/.rbenv (:user) , /usr/local/rbenv(:system)
-#set :rbenv_custom_path, '/home/vagrant/.rbenv'
-set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-set :rbenv_map_bins, %w{rake gem bundle ruby rails}
-set :rbenv_roles, :all # default value
+# set :rbenv_type, :user
+# set :rbenv_ruby, '2.1.1'
+## default settings is : ~/.rbenv (:user) , /usr/local/rbenv(:system)
+# #set :rbenv_custom_path, '/home/vagrant/.rbenv'
+# set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+# set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+# set :rbenv_roles, :all # default value
 
 # Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
@@ -88,10 +88,6 @@ task :rakugaki do
     end
   end
 end
-
-#
-# clean gabage tgz files.
-#
 
 namespace :deploy do    
   desc "test /usr/bin/ruby exsists or not."
@@ -175,32 +171,47 @@ set :rbenv_repo, 'https://github.com/sstephenson/rbenv.git'
 set :ruby_build_repo, 'https://github.com/sstephenson/ruby-build.git'
 set :ruby_build_path, '/home/vagrant/.rbenv/plugins/ruby-build'
 
-desc "Fetch rbenv repository on VM server"
-task :fetch_rbenv do
-  on roles(:web) do
-    # run something tasks on server
-    if test "[ -d #{fetch(:rbenv_path)} ]"
-      output = capture "echo 'rbenv is already installed.'"
-      info output
-    else 
-      execute "git clone #{fetch(:rbenv_repo)} #{fetch(:rbenv_path)}"
-      output = capture "uptime"
-      info output
+namespace :setup_rbenv do
+  desc "Fetch rbenv repository on VM server"
+  task :fetch_rbenv do
+    on roles(:node1 :node2 :node3) do
+      if test "[ -d #{fetch(:rbenv_path)} ]"
+        info "rbenv is already installed."
+      else 
+        execute "git clone #{fetch(:rbenv_repo)} #{fetch(:rbenv_path)}"
+        execute "export"
+        output = capture "uptime"
+        info output
+      end
     end
   end
-end
 
-desc "Fetch ruby-build repository on VM server"
-task :fetch_ruby_build => :fetch_rbenv do
-  on roles(:web) do
-    # run something tasks on server
-    if test "[ -d #{fetch(:ruby_build_path)} ]"
-      output = capture "echo 'ruby-build is already installed.'"
-      info output
-    else 
-      execute "git clone #{fetch(:ruby_build_repo)} #{fetch(:ruby_build_path)}"
-      output = capture "uptime"
-      info output
+  desc "Fetch ruby-build repository on VM server"
+  task :fetch_ruby_build => :fetch_rbenv do
+    on roles(:node1 :node2 :node3) do
+      if test "[ -d #{fetch(:ruby_build_path)} ]"
+        info "ruby-build is already installed."
+      else 
+        execute "git clone #{fetch(:ruby_build_repo)} #{fetch(:ruby_build_path)}"
+        output = capture "uptime"
+        info output
+      end
     end
   end
-end
+
+  desc "remove rbenv directories and files on VM server"
+  task :remove_rbenv_dir do
+    on roles(:node1 :node2 :node3) do
+      if !test "[ -d #{fetch(:rbenv_path)} ]"
+        info "rbenv is not installed."
+      else 
+        execute "rm -rf #{fetch(:rbenv_path)}"
+        output = capture "uptime"
+        info output
+      end
+    end
+  end
+end  
+
+#before 'deploy:starting', 'fetch_rb_env'
+#before 'deploy:starting', 'fetch_ruby_build' 

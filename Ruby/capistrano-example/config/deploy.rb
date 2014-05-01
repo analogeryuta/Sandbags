@@ -1,4 +1,4 @@
-# config valid only for Capistrano 3.1
+# config valid only for Capistrano 3.2
 lock '3.2.1'
 
 #set :application, 'my_app_name'
@@ -23,15 +23,6 @@ lock '3.2.1'
 # Default value for :pty is false
 # set :pty, true
 
-# rbenv settings on remote environmentnt
-# set :rbenv_type, :user
-# set :rbenv_ruby, '2.1.1'
-## default settings is : ~/.rbenv (:user) , /usr/local/rbenv(:system)
-# #set :rbenv_custom_path, '/home/vagrant/.rbenv'
-# set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-# set :rbenv_map_bins, %w{rake gem bundle ruby rails}
-# set :rbenv_roles, :all # default value
-
 # Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
 
@@ -43,17 +34,6 @@ lock '3.2.1'
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
-
-#
-# for Capistrano tutorial: disable all deploy Tasks using Rake::Task.clear
-#
-# framework_tasks = [:starting, :started, :updating, :updated, :publishing, :published, :finishing, :finished]
- 
-# framework_tasks.each do |t|
-#   Rake::Task["deploy:#{t}"].clear
-# end
- 
-# Rake::Task[:deploy].clear
 
 #
 # set application's name and install directory
@@ -70,52 +50,114 @@ desc "put 'rakugaki' files to VM server"
 task :rakugaki do
   # describe  your task here.
   run_locally do
-    # run something locall tasks
-    #execute "uptime"
-    output = capture "echo 'hello my capistrano world!'"
-    info outputp
+    # doing something on local.
   end
-  on roles(:web) do
+  on roles(:web) do |host|
     # run something tasks on server
-    if test "[ -e rakugaki ]"
+    if test "[ -f rakugaki ]"
       execute "echo 'kilroy was here' >> rakugaki"
-      output = capture "echo 'Done rakugaki'"
-      info output
+      info "Host #{host} (#{host.roles.to_a.join(', ')}): #{capture(:uptime)}"
+      info 'Done rakugaki'
+      info capture "uptime"
     else 
       execute "touch rakugaki;echo 'kilroy was here'>>rakugaki"
-      output = capture "uptime"
-      info output
+      info capture "uptime"
     end
   end
 end
 
-namespace :deploy do    
-  desc "test /usr/bin/ruby exsists or not."
-  task :check_ruby do
-    # describe  your task here.
-    run_locally do
-      # run something locall tasks
-      #execute "uptime"
-      output = capture "echo 'nothing to do on local environment.'"
+desc "test system's ruby exsists or not."
+task :check_ruby do
+  # describe  your task here.
+  run_locally do
+    # run something locall tasks
+    #execute "uptime"
+    output = capture "echo 'nothing to do on local environment.'"
+    info output
+  end
+  on roles(:web) do
+    # run something tasks on server
+    if test "[ -e /usr/bin/ruby ]"
+      info 'execute ruby script'
+      output = capture "ruby -v"
       info output
+    else 
+      info 'command not found.'
     end
+  end
+end
+
+desc "Ask input from prompt"
+task :test_prompt do
+  #ask(:database_password, "default", echo: false)
+  ask(:breakfast, "daunut")
+  on roles(:all) do |h|
+    execute "echo \"$(whoami) wants #{fetch(:breakfast)} for breakfast!\""
+   # execute "echo \"$(whoami) wants password: #{fetch(:database_passowrd)}\""
+  end
+end
+
+#
+# rbenv installation settings
+#
+set :rbenv_path, '/home/vagrant/.rbenv'
+set :rbenv_repo, 'https://github.com/sstephenson/rbenv.git'
+set :ruby_build_repo, 'https://github.com/sstephenson/ruby-build.git'
+set :ruby_build_path, '/home/vagrant/.rbenv/plugins/ruby-build'
+
+namespace :setup_rbenv do
+  desc "Fetch rbenv repository on VM server"
+  task :fetch_rbenv do
     on roles(:web) do
-      # run something tasks on server
-      if test "[ -e /usr/bin/ruby ]"
-        info 'execute ruby script'
-        output = capture "ruby -v"
-        info output
+      if test "[ -d #{fetch(:rbenv_path)} ]"
+        info "rbenv is already installed."
       else 
-        info 'command not found.'
+        execute "git clone #{fetch(:rbenv_repo)} #{fetch(:rbenv_path)}"
+        execute "export"
+        output = capture "uptime"
+        info output
       end
     end
   end
 
+  desc "Fetch ruby-build repository on VM server"
+  task :fetch_ruby_build => :fetch_rbenv do
+    on roles(:web) do
+      if test "[ -d #{fetch(:ruby_build_path)} ]"
+        info "ruby-build is already installed."
+      else 
+        execute "git clone #{fetch(:ruby_build_repo)} #{fetch(:ruby_build_path)}"
+        output = capture "uptime"
+        info output
+      end
+    end
+  end
+
+  desc "remove rbenv directories and files on VM server"
+  task :remove_rbenv_dir do
+    on roles(:web) do
+      if !test "[ -d #{fetch(:rbenv_path)} ]"
+        info "rbenv is not installed."
+      else 
+        execute "rm -rf #{fetch(:rbenv_path)}"
+        output = capture "uptime"
+        info output
+      end
+    end
+  end
+end  
+#before 'deploy:starting', 'fetch_rb_env'
+#before 'deploy:starting', 'fetch_ruby_build' 
+
+#
+# deploying service examples.
+#
+namespace :deploy do    
   desc "update app files"
   task :update_file do
     # fetch remote scm files here
     run_locally do
-      execute "echo 'fetch sources from servers via SCM...'"
+      sh "echo 'fetch sources from servers via SCM...'"
     end
   end
 
@@ -162,56 +204,3 @@ namespace :deploy do
     #restart command here
   end
 end
-
-#
-# rbenv installation settings
-#
-set :rbenv_path, '/home/vagrant/.rbenv'
-set :rbenv_repo, 'https://github.com/sstephenson/rbenv.git'
-set :ruby_build_repo, 'https://github.com/sstephenson/ruby-build.git'
-set :ruby_build_path, '/home/vagrant/.rbenv/plugins/ruby-build'
-
-namespace :setup_rbenv do
-  desc "Fetch rbenv repository on VM server"
-  task :fetch_rbenv do
-    on roles(:node1 :node2 :node3) do
-      if test "[ -d #{fetch(:rbenv_path)} ]"
-        info "rbenv is already installed."
-      else 
-        execute "git clone #{fetch(:rbenv_repo)} #{fetch(:rbenv_path)}"
-        execute "export"
-        output = capture "uptime"
-        info output
-      end
-    end
-  end
-
-  desc "Fetch ruby-build repository on VM server"
-  task :fetch_ruby_build => :fetch_rbenv do
-    on roles(:node1 :node2 :node3) do
-      if test "[ -d #{fetch(:ruby_build_path)} ]"
-        info "ruby-build is already installed."
-      else 
-        execute "git clone #{fetch(:ruby_build_repo)} #{fetch(:ruby_build_path)}"
-        output = capture "uptime"
-        info output
-      end
-    end
-  end
-
-  desc "remove rbenv directories and files on VM server"
-  task :remove_rbenv_dir do
-    on roles(:node1 :node2 :node3) do
-      if !test "[ -d #{fetch(:rbenv_path)} ]"
-        info "rbenv is not installed."
-      else 
-        execute "rm -rf #{fetch(:rbenv_path)}"
-        output = capture "uptime"
-        info output
-      end
-    end
-  end
-end  
-
-#before 'deploy:starting', 'fetch_rb_env'
-#before 'deploy:starting', 'fetch_ruby_build' 

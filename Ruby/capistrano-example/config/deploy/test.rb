@@ -22,6 +22,5 @@ server 'localhost', roles: %w{web node3}, ssh_options: {
   port: 2201,
   user: 'vagrant',
   keys: %w(~/.vagrant.d/insecure_private_key),
-  forward_agent: true,
   auth_methods: %w(publickey)
 }

@@ -33,31 +33,38 @@ package { $development_packages:
 #  require => Package[$development_packages]
 #}
 
-### Install rbenv environment 
+### Install rbenv environment (on vagrant user.)
 exec { "fetch-rbenv":
-  command => "git clone https://github.com/sstephenson/rbenv.git
-  ~/.rbenv",
+  user => "vagrant",
+  group => "vagrant",
   cwd => "/home/vagrant",
+  command => "git clone https://github.com/sstephenson/rbenv.git .rbenv",
   require => Package[$development_packages]
 }
 
 ### Setup shell's path for rbenv
 exec { "set-rbenv-path":
-  command => "echo \'export PATH=\"\$HOME/.rbenv/bin:\$PATH\"\' >> ~/.bash_profile",
+  user => "vagrant",
+  group => "vagrant",
   cwd => "/home/vagrant",
+  command => "echo \'export PATH=\"\$HOME/.rbenv/bin:\$PATH\"\' >> .bash_profile",
   require => Exec["fetch-rbenv"]
 }
 
 ### Setup rbenv shims
-exec { "set-rbenv-shims"
-  command => "echo \'eval \"\$(rbenv init -)\"\' >> ~/.bash_profile",
+exec { "set-rbenv-shims":
+  user => "vagrant",
+  group => "vagrant",
   cwd => "/home/vagrant",
+  command => "echo \'eval \"\$(rbenv init -)\"\' >> .bash_profile",
   require => Exec["set-rbenv-path"]
 }
 
 ### Install ruby-build(rbenv's plugin).
-exec { "fetch-ruby-build"
-  command => "https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build",
+exec { "fetch-ruby-build":
+  user => "vagrant",
+  group => "vagrant",
   cwd => "/home/vagrant",
+  command => "git clone https://github.com/sstephenson/ruby-build.git .rbenv/plugins/ruby-build",
   require => Exec["set-rbenv-shims"]
 }

@@ -1,0 +1,29 @@
+#
+# ssh-config : template for ssh forwarding.
+# Prease add these settings on your ~/.ssh/config.
+#
+
+### Forward host machine
+Host vagrant-localhost
+     HostName 127.0.0.1
+     Port 2222
+     User vagrant
+     UserKnownHostsFile /dev/null
+     IdentityFile ~/.vagrant.d/insecure_private_key
+
+## forwarding remote server
+Host dummy-server-1
+     HostName 192.168.127.3
+     User vagrant
+     IdentityFile ~/.vagrant.d/insecure_private_key
+     StrictHostKeyChecking no
+     UserKnownHostsFile /dev/null
+     ProxyCommand ssh vagrant-localhost -W %h:%p
+
+Host dummy-server-2
+     HostName 192.168.127.4
+     User vagrant
+     IdentityFile ~/.vagrant.d/insecure_private_key
+     StrictHostKeyChecking no
+     UserKnownHostsFile /dev/null
+     ProxyCommand ssh vagrant-localhost -W %h:%p

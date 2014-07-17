@@ -51,22 +51,6 @@ exec { "fetch-rbenv-repos":
   require => Package[$development_packages]
 }
 
-### Setup shell's path for rbenv,and set shims on bash_profile
-### (process below is now never used.)
-# exec { "set-rbenv-path":
-#   user => $user,
-#   cwd => $home,
-#   command => "echo \'export PATH=\"\$HOME/.rbenv/bin:\$PATH\"\' >> .bash_profile",
-#   require => Exec["fetch-rbenv"]
-# }
-#
-# exec { "set-rbenv-shims":
-#   user => $user,
-#   cwd => $home,
-#   command => "echo \'eval \"\$(rbenv init -)\"\' >> .bash_profile",
-#   require => Exec["set-rbenv-path"]
-# }
-
 ### Fetch ruby-build repos(rbenv's plugin).
 exec { "fetch-ruby-build":
   user => $user,
@@ -77,18 +61,21 @@ exec { "fetch-ruby-build":
 }
 
 ### rehash path after making .bash_profile and fetching ruby-build
-exec { "rehash-path":
-  user => $user,
-  cwd => $home,
-  subscribe => File["${home}/.bash_profile"],
-  command => "bash -c 'source ${home}/.bash_profile'",
-  require => Exec["fetch-ruby-build"]
-}
+# exec { "rehash-path":
+#   user => $user,
+#   cwd => $home,
+#   subscribe => File["${home}/.bash_profile"],
+#   command => "bash -c 'source ${home}/.bash_profile'",
+#   require => Exec["fetch-ruby-build"]
+# }
 
 ### Install ruby environment from rbenv
-exec { "install-ruby":
-  user => $user,
-  cwd => $home,
-  command => "rbenv install -v 2.1.1",
-  require => Exec["fetch-ruby-build", "rehash-path"]
-}
+# exec { "install-ruby":
+#   user => $user,
+#   cwd => $home,
+# #  path => '${path}:${home}/.rbenv/bin:${home}/.rbenv/shim',
+# #  command => "su -l ${user} -c \"bash --login -c 'rbenv install -v 2.1.1'\"",
+#   command => "rbenv install -v 2.1.1",
+# #  require => Exec["fetch-ruby-build", "rehash-path"]
+#   require => Exec["fetch-ruby-build"]
+# }

@@ -44,11 +44,9 @@ end
 
 desc "Ask input from prompt"
 task :test_prompt do
-  #ask(:database_password, "default", echo: false)
   ask(:breakfast, "daunut")
   on roles(:all) do |h|
     execute "echo \"$(whoami) wants #{fetch(:breakfast)} for breakfast!\""
-   # execute "echo \"$(whoami) wants password: #{fetch(:database_passowrd)}\""
   end
 end
 
@@ -92,18 +90,6 @@ namespace :setup_rbenv do
       end
     end
   end
-end  
+end
 #before 'deploy:starting', 'fetch_rb_env'
 #before 'deploy:starting', 'fetch_ruby_build' 
-
-
-desc "exec echo server"
-task :exec_echo_server do
-  on roles(:web) do
-  end
-end
-
-desc "Restart application"
-task :restart_echo_server do
-  #restart command here
-end

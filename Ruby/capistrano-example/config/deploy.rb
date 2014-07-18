@@ -1,15 +1,14 @@
-# config valid only for Capistrano 3.2
+# config valid only for Capistrano 3.1
 lock '3.2.1'
 
-#set :application, 'my_app_name'
-
-#set :repo_url, 'git@example.com:me/my_repo.git'
+set :application, 'my_app_name'
+set :repo_url, 'git@example.com:me/my_repo.git'
 
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app
-#set :deploy_to, '/var/www/my_ap'
+# set :deploy_to, '/var/www/my_app'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -35,68 +34,25 @@ lock '3.2.1'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-#
-# set application's name and install directory
-set :application, 'echo-server-tools'
-set :deploy_to, '/home/vagrant/public'
+namespace :deploy do
 
-#
-# set SCM repository(for example, git)
-# fetch github files
-#set :application, 'Sandbags'
-#set :repo_url, 'git@github.com:analogryuta/Sandbags'
-
-
-#
-# rbenv installation settings
-#
-set :rbenv_path, '/home/vagrant/.rbenv'
-set :rbenv_repo, 'https://github.com/sstephenson/rbenv.git'
-set :ruby_build_repo, 'https://github.com/sstephenson/ruby-build.git'
-set :ruby_build_path, '/home/vagrant/.rbenv/plugins/ruby-build'
-
-
-#
-# deploying service examples.
-#
-namespace :deploy do    
-  desc "update app files"
-  task :update_file do
-    # fetch remote scm files here
-    run_locally do
-      sh "echo 'fetch sources from servers via SCM...'"
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      # execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
-  desc "archive fetched files"
-  task :archive_file => :update_file do
-    run_locally do
-      if test "[ -d #{fetch :application} ]"
-        if test "[ -f #{fetch :application}.tgz ]"
-          info 'tarball already created.'
-        else 
-          info 'create tarball here.'
-          execute "tar -zcvf #{fetch :application}.tgz ./#{fetch :application}"
-        end
-      else 
-        info 'there are no tools, please create files.'
-      end
+  after :publishing, :restart
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
     end
   end
 
-  desc "transfar files local to remote"
-  task :upload_file => :archive_file do
-    archive_file = "#{fetch :application}.tgz"
-    release_path = File.join(fetch(:deploy_to), "")
-
-    on roles(:web) do
-      if test "[ -d #{release_path} ]"
-        info 'release directory was already created.'
-      else 
-        execute "mkdir -p #{release_path}"
-      end
-      upload! archive_file, release_path
-      execute "cd #{release_path}; tar -zxvf #{fetch :application}.tgz"
-    end
-  end
 end

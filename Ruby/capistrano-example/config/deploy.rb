@@ -1,8 +1,8 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
-set :application, 'my_app_name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+#set :application, 'my_app_name'
+#set :repo_url, 'git@example.com:me/my_repo.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -53,4 +53,61 @@ namespace :deploy do
     end
   end
 
+end
+
+set :rbenv_url, "https://github.com/sstephenson/rbenv.git"
+set :ruby_build_url, "https://github.com/sstephenson/ruby-build.git"
+set :ruby_build_path, "#{fetch(:rbenv_path)}/plugins/ruby-build"
+
+namespace :setup_rbenv do
+
+  desc "Fetch rbenv repository on VM server"
+  task :fetch_rbenv do
+    on roles(:web) do
+      if test "[ -d #{fetch(:rbenv_path)} ]"
+        info "rbenv is already installed."
+      else 
+        info "rbenv is not installed."
+        execute "git clone #{fetch(:rbenv_url)} #{fetch(:rbenv_path)}"
+        output = capture "uptime"
+        info output
+      end
+    end
+  end
+
+  task :build_rbenv =>:fetch_rbenv do
+    on roles(:web) do
+      if test "[ ! -d #{fetch(:rbenv_ruby_dir)} ]"
+        execute "echo \'export PATH\=\"\$HOME/.rbenv/bin:\$PATH\"\' >> ~/.bash_profile"
+        execute "#{fetch(:rbenv_path)}/bin/rbenv install 2.1.1"
+        execute "#{fetch(:rbenv_path)}/bin/rbenv global 2.1.1"
+      end
+    end
+  end
+
+  desc "Fetch ruby-build repository on VM server"
+  before 'rbenv:validate', :fetch_ruby_build => :build_rbenv do
+    on roles(:web) do
+      if test "[ -d #{fetch(:ruby_build_path)} ]"
+        info "ruby-build is already installed."
+      else 
+        execute "git clone #{fetch(:ruby_build_url)} #{fetch(:ruby_build_path)}"
+        output = capture "uptime"
+        info output
+      end
+    end
+  end
+
+  desc "remove rbenv directories and files on VM server"
+  task :remove_rbenv_dir do
+    on roles(:web) do
+      if !test "[ -d #{fetch(:rbenv_path)} ]"
+        info "rbenv is not installed."
+      else 
+        execute "rm -rf #{fetch(:rbenv_path)}"
+        output = capture "uptime"
+        info output
+      end
+    end
+  end
 end

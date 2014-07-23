@@ -1,0 +1,11 @@
+.bundle
+vendor
+.vagrant
+*.rpm
+*.deb
+*.tar.gz
+rspec.xml
+.tmp/
+modules/
+.librarian
+*.*~

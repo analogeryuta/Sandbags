@@ -3,16 +3,17 @@
 #
 #server 'localhost', roles: %w{web node}, port: 2222, ssh_options
 
-server "localhost", roles: %w{app, web}, ssh_options: {
+set :ssh_options, {
   port: 2222,
   user: 'vagrant',
-  keys: %w(~/.vagrant.d/insecure_private_key),
+  keys: [File.expand_path('~/.vagrant.d/insecure_private_key')],
   auth_methods: %w(publickey)
 }
 
+server "localhost", roles: %w(app, web), ssh_options: fetch(:ssh_options)
+
 set :branch, ENV['BRANCH'] || 'master'
 set :rbenv_type, :user
-set :linked_dirs, %w(bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system tmp/run)
 set :keep_releases, 5
 set :scm, :bundle_rsync # Need this
 #set :bundle_rsync_scm, 'local_git'

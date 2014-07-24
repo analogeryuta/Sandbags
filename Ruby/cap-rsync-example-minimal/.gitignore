@@ -8,3 +8,4 @@ rspec.xml
 .tmp/
 modules/
 .librarian
+.local_repo

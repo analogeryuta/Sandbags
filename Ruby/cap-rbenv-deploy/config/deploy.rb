@@ -72,8 +72,6 @@ namespace :setup_rbenv do
       else 
         info "rbenv is not installed."
         execute "git clone #{fetch(:rbenv_url)} #{fetch(:rbenv_path)}"
-        output = capture "uptime"
-        info output
       end
     end
   end
@@ -85,8 +83,6 @@ namespace :setup_rbenv do
         info "ruby-build is already installed."
       else 
         execute "git clone #{fetch(:ruby_build_url)} #{fetch(:ruby_build_path)}"
-        output = capture "uptime"
-        info output
       end
     end
   end
@@ -109,8 +105,6 @@ namespace :setup_rbenv do
         info "rbenv is not installed."
       else 
         execute "rm -rf #{fetch(:rbenv_path)}"
-        output = capture "uptime"
-        info output
       end
     end
   end

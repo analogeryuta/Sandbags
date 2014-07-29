@@ -1,0 +1,19 @@
+---
+:backends: yaml
+:logger: noop
+:merge_behavior: deeper
+:yaml:
+  :datadir: /etc/puppet/hieradata
+:hierarchy:
+  - "%{::hostname}"
+  - "%{::operatingsystem}"
+  - common
+---
+hash_A:
+  - AAA
+  - BBB
+  - CCC
+hash_B:
+  - hoge
+  - fuga
+  - gufu

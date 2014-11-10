@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM analogeryuta/ubuntu:1404
 
 # Configuration 
 ENV http_proxy

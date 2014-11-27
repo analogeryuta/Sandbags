@@ -1,0 +1,4 @@
+{
+  "http_proxy":"{{env `http_proxy`}}",
+  "":""
+}

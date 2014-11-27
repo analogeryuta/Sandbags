@@ -1,7 +1,7 @@
 #!/bin/sh
 # Proxy settings
 
-proxy='http://proxy.occ.co.jp:8080'
+proxy=''
 
 # wget
 echo "http_proxy = $proxy"  >> /etc/wgetrc

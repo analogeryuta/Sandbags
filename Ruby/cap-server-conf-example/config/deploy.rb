@@ -1,8 +1,8 @@
 # config valid only for Capistrano 3.1
-lock '3.2.1'
+lock '3.3.3'
 
-set :application, 'my_app_name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+# set :application, 'my_app_name'
+# set :repo_url, 'git@example.com:me/my_repo.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -35,21 +35,23 @@ set :repo_url, 'git@example.com:me/my_repo.git'
 # set :keep_releases, 5
 desc "Create empty file, then write some charactors via echo()."
 task :touch_echo do
-  # describe  your task here.
-  run_locally do
-    # doing something on local.
-  end
-  on roles(:node) do |host|
+  on roles(:node, :master) do |host|
     # run something tasks on server
     if test "[ -f rakugaki ]"
       execute "echo 'kilroy was here' >> rakugaki"
       info "Host #{host} (#{host.roles.to_a.join(', ')}): #{capture(:uptime)}"
-      info 'Done rakugaki'
       info capture "uptime"
     else 
-      execute "touch rakugaki;echo 'kilroy was here'>>rakugaki"
+      execute "touch rakugaki; echo 'kilroy was here' >> rakugaki"
       info capture "uptime"
     end
+  end
+end
+
+desc 'test for doing sudo operation.'
+task :test_sudo_execute do
+  on roles(:node, :master) do
+    sudo "ls -lh /root"
   end
 end
 

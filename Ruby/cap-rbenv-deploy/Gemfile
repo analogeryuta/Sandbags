@@ -1,6 +1,0 @@
-source 'http://rubygems.org'
-
-# capistrano gems
-gem 'capistrano'
-#gem 'capistrano-rbenv'
-#gem 'capistrano-bundle_rsync'

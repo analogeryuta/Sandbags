@@ -1,6 +1,0 @@
-source 'http://rubygems.org'
-
-# serverspec gems
-gem 'rake'
-gem 'serverspec', '~> 2.0.0.beta'
-gem 'rspec'

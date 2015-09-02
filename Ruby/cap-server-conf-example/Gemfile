@@ -1,5 +1,0 @@
-source 'http://rubygems.org'
-
-# capistrano gems
-gem 'capistrano', '>= 3.3.3'
-gem 'capistrano-sudo', git: 'https://github.com/analogeryuta/capistrano-sudo'
